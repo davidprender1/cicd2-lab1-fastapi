@@ -26,4 +26,4 @@ def add_user(new_user: UserCreate):
 def get_users():
     return users 
 
-#Skipping to the PR
+# Skipping to the PR
