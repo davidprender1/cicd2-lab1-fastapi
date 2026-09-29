@@ -1,6 +1,6 @@
 def user_payload(uid=1, name="David", email="david@atu.ie", age=25, student_id="S1234567"):
     return {
-        "userid": uid,
+        "user_id": uid,
         "name": name,
         "email": email,
         "age": age,
@@ -12,6 +12,15 @@ def test_create_user_returns_201(client):
 
     assert response.status_code == 201
     data = response.json()
-    assert data ["userid"] == 1
+    assert data ["user_id"] == 1
     assert data ["name"] == "David"
     assert data ["email"] == "david@atu.ie"
+
+
+def test_duplicate_userid_returns_409(client):
+    client.post("/api/users", json=user_payload(uid=2))
+
+    response = client.post("/api/users", json=user_payload(uid=2))
+
+    assert response.status_code == 409
+    assert "exists" in response.json()["detail"].lower()
